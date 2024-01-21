@@ -1,3 +1,4 @@
+'use client'
 
 import Link from 'next/link';
 
@@ -10,7 +11,7 @@ export default function Home() {
         <div className="bg-white p-6 pl-12 mt-24">
           <div className="container">
             <h2 className="text-2xl font-semibold mb-4">runPen</h2>
-            <p>Run, Write, Reach.</p>
+            <p>Run. Write. Reach.</p>
           </div>
         </div>
   
