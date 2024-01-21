@@ -1,22 +1,27 @@
 const express = require("express");
-// import data model for User
+const router = express.Router();
 const bcrypt = require("bcrypt");
 
-const app = express();
+const { User } = require("../models.js");
 
 // create user route
-app.post("/create-user", function (req, res) {
+router.post("/create-user", async (req, res) => {
 
     try {
   
         const { email, password } = req.body;
+
+        // Simple validation, check if both email and password are provided
+        if (!email || !password) {
+          return res.status(400).json({ error: 'Email and password are required.' });
+        }
   
         // check if the user is already in use with mongoose
-        let userExists = false;
+        let userExists = await User.findOne({ email });
 
         if (userExists) {
-        res.status(401).send("Email is already in use");
-        return;
+          res.status(401).send("Email is already in use");
+          return;
         }
 
         // Define salt rounds
@@ -24,22 +29,22 @@ app.post("/create-user", function (req, res) {
         
         // Hash password
         bcrypt.hash(password, saltRounds, (err, hash) => {
-            if (err) throw new Error("Internal Server Error");
 
-        // Create a new user
-        // let user = new User({
-        //   email,
-        //   password: hash,
-        // });
+          if (err) throw new Error("Internal Server Error");
 
-        // Save user to database
-        // user.save().then(() => {
-        //   res.json({ message: "User created successfully", user });
-            }
-        );
+          // Create a new user
+          let user = new User({
+            email,
+            password: hash,
+          });
 
-        res.status(201).send("User created");
-
+          // Save user to database
+          user.save()
+            .then(() => {
+              res.status(201).send("User created.");
+            });
+        
+        });
   
     } catch (err) {
 
@@ -50,32 +55,37 @@ app.post("/create-user", function (req, res) {
 });
 
 // login user route
-app.post("/login", function (req, res) {
+router.post("/login", async (req, res) => {
     
     try {
-        // Extract email and password from the req.body object
-        const { email, password } = req.body;
-     
-        // Check if user exists in database
-        // let user = await User.findOne({ email });
-        let user = null;
-     
-        if (!user) {
-          return res.status(401).json({ message: "Invalid Credentials" });
-        }
-     
-        // Compare passwords
-        bcrypt.compare(password, user.password, (err, result) => {
-          if (result) {
-            return res.status(200).json({ message: "User Logged in Successfully" });
-          }
-          
-          console.log(err);
-          return res.status(401).json({ message: "Invalid Credentials" });
-        });
-      } catch (error) {
-        res.status(401).send(err.message);
+
+      // Extract email and password from the req.body object
+      const { email, password } = req.body;
+    
+      // Check if user exists in database
+      let user = await User.findOne({ email });
+    
+      if (!user) {
+        return res.status(401).json({ message: "Invalid Credentials" });
       }
+    
+      // Compare passwords
+      bcrypt.compare(password, user.password, (err, result) => {
+
+        if (result) {
+          return res.status(200).json({ message: "User Logged in Successfully" });
+        }
+        
+        console.log(err);
+        return res.status(401).json({ message: "Invalid Credentials" });
+
+      });
+
+    } catch (error) {
+
+      res.status(401).send(err.message);
+      
+    }
 
 });
 
@@ -83,3 +93,4 @@ app.post("/login", function (req, res) {
 // route for updating a user's profile data
 // route for getting a user's journal list
   
+module.exports = router;
