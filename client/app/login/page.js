@@ -8,9 +8,9 @@ export default function Login() {
         
         <div className="flex">
         
-            <div className="container mx-4 max-w-md mt-16">
+            <div className="container mx-8 max-w-md mt-8">
 
-                <div className="bg-white p-8 rounded-lg shadow-md">
+                <div className="bg-white p-8 border border-gray-200 rounded-lg shadow-md">
 
                     <h2 className="text-2xl font-semibold mb-6">Login</h2>
         
@@ -28,7 +28,7 @@ export default function Login() {
                         </div>
 
                     
-                        <button className="bg-pink-500 text-white px-4 py-2 mt-6 rounded-md hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800">
+                        <button className="bg-dark-green text-white px-4 py-2 mt-6 rounded-md hover:bg-yinmn-blue focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-yinmn-blue">
                             <Link href="/user">Log In</Link>
                         </button>
 

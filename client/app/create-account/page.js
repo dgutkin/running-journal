@@ -13,7 +13,7 @@ export default function CreateAccount() {
 
     const router = useRouter();
 
-    function handleCreateAccount() {
+    async function handleCreateAccount() {
 
         const data = {"email": email, "password": password};
         const options = {
@@ -26,7 +26,7 @@ export default function CreateAccount() {
         }
         const url = "http://127.0.0.1:8080/create-user";
         
-        fetch(url, options)
+        await fetch(url, options)
             .then((response) => {
                 console.log(response);
                 if (response.status == 201){
@@ -39,7 +39,6 @@ export default function CreateAccount() {
             .catch((error) => {
                 throw new Error("Create Account Error");
             });
-        
         
     }
 
@@ -65,7 +64,7 @@ export default function CreateAccount() {
                     </div>
 
                 
-                    <button className="bg-pink-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue active:bg-blue-800" onClick={handleCreateAccount}>
+                    <button className="bg-dark-green text-white px-4 py-2 rounded-md hover:bg-yinmn-blue" onClick={handleCreateAccount}>
                         Create Writer
                     </button>
 
