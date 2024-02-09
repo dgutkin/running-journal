@@ -1,7 +1,9 @@
 import { Inter } from 'next/font/google'
-import './styles/globals.css'
 
 import Link from 'next/link';
+
+import './styles/globals.css'
+import AppProvider from './context/context';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,21 +15,25 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full">
+
       <head><title>runPen</title></head>
 
       <body className={inter.className}>
 
-        <nav className="bg-pink-500 p-4 text-white">
-          <div className="container mx-4">
-            <div className="text-lg font-bold">
-              <Link href="/">rP</Link>
+        <AppProvider>
+          <nav className="bg-dark-green p-4">
+            <div className="container mx-4">
+              <div className="text-lg text-white font-bold">
+                <Link href="/">rP</Link>
+              </div>
             </div>
-          </div>
-        </nav>
+          </nav>
 
-        {children}
+          {children}
+        </AppProvider>
 
       </body>
+
     </html>
   )
 }
