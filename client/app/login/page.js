@@ -24,50 +24,17 @@ export default function Login() {
         
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                // Signed in 
                 const user = userCredential.user;
-                // ...
                 router.push("/user");
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorMessage);
+                setAuthError(true);
+                setAuthErrorMessage(errorMessage);
             });
 
     }
-
-    // async function handleLogin(e) {
-
-    //     e.preventDefault();
-
-    //     const data = {"email": email, "password": password};
-    //     const options = {
-    //         method: "POST",
-    //         mode: "cors",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify(data)
-    //     }
-    //     const url = "http://127.0.0.1:8080/login";
-        
-    //     await fetch(url, options)
-    //         .then((response) => {
-    //             console.log(response);
-    //             if (response.status == 200){
-                    
-    //                 router.push('/user');
-    //             } else {
-    //                 setAuthError(true);
-    //                 setAuthErrorMessage(response.text());
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             throw new Error("Create Account Error");
-    //         });
-        
-    // }
 
     return (
         
@@ -98,7 +65,7 @@ export default function Login() {
                         </button>
 
                         {authError && 
-                        <p>{authErrorMessage}</p>
+                        <p className="text-yinmn-blue text-sm mt-4">{authErrorMessage}</p>
                         }
 
                     </form>
