@@ -3,6 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { firebaseApp } from '../firebase/firebase';
+
 export default function CreateAccount() {
 
     const [authError, setAuthError] = useState(false);
@@ -12,32 +15,22 @@ export default function CreateAccount() {
 
     const router = useRouter();
 
-    async function handleCreateAccount() {
+    async function handleCreateAccount(e) {
 
-        const data = {"email": email, "password": password};
-        const options = {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        }
-        const url = "http://127.0.0.1:8080/create-user";
-        
-        await fetch(url, options)
-            .then((response) => {
-                console.log(response);
-                if (response.status == 201){
-                    router.push('/user');
-                } else {
-                    setAuthError(true);
-                    setAuthErrorMessage(response.text());
-                }
+        e.preventDefault();
+
+        const auth = getAuth(firebaseApp);
+
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
             })
             .catch((error) => {
-                throw new Error("Create Account Error");
+                const errorCode = error.code;
+                const errorMessage = error.message;
             });
+
+        router.push("/user");
         
     }
 
