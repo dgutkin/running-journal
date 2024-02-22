@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+  name: String,
   email: String,
   password: String
 });
@@ -18,7 +19,8 @@ const articleSchema = new Schema({
     type: Map,
     of: String
   },
-  journalName: String
+  journalName: String,
+  userEmail: String
 });
 
 const User = mongoose.model('User', userSchema);

@@ -13,7 +13,9 @@ app.use(cors({origin: 'http://localhost:3000'}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-mongoose.connect('mongodb://127.0.0.1:27017/runpen')
+const dbPath = process.env.DB_URL || 'mongodb://127.0.0.1:27017/runpen';
+
+mongoose.connect(dbPath)
   .then(() => console.log('Database Connected!'));
 
 app.get("/", function (req, res) {

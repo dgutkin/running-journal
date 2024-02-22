@@ -5,15 +5,15 @@ const bcrypt = require("bcrypt");
 const { User } = require("../models.js");
 
 // create user route
-router.post("/create-user", async (req, res) => {
+router.post("/add-user", async (req, res) => {
 
     try {
   
-        const { email, password } = req.body;
+        const { name, email, password } = req.body;
 
         // Simple validation, check if both email and password are provided
-        if (!email || !password) {
-          return res.status(400).json({ error: 'Email and password are required.' });
+        if (!name || !email || !password) {
+          return res.status(400).json({ error: 'Name, email and password are required.' });
         }
   
         // check if the user is already in use with mongoose
@@ -34,6 +34,7 @@ router.post("/create-user", async (req, res) => {
 
           // Create a new user
           let user = new User({
+            name,
             email,
             password: hash,
           });
@@ -55,39 +56,39 @@ router.post("/create-user", async (req, res) => {
 });
 
 // login user route
-router.post("/login", async (req, res) => {
+// router.post("/login", async (req, res) => {
     
-    try {
+//     try {
 
-      // Extract email and password from the req.body object
-      const { email, password } = req.body;
+//       // Extract email and password from the req.body object
+//       const { email, password } = req.body;
     
-      // Check if user exists in database
-      let user = await User.findOne({ email });
+//       // Check if user exists in database
+//       let user = await User.findOne({ email });
     
-      if (!user) {
-        return res.status(401).json({ message: "Invalid Credentials" });
-      }
+//       if (!user) {
+//         return res.status(401).json({ message: "Invalid Credentials" });
+//       }
     
-      // Compare passwords
-      bcrypt.compare(password, user.password, (err, result) => {
+//       // Compare passwords
+//       bcrypt.compare(password, user.password, (err, result) => {
 
-        if (result) {
-          return res.status(200).json({ message: "User Logged in Successfully" });
-        }
+//         if (result) {
+//           return res.status(200).json({ message: "User Logged in Successfully" });
+//         }
         
-        console.log(err);
-        return res.status(401).json({ message: "Invalid Credentials" });
+//         console.log(err);
+//         return res.status(401).json({ message: "Invalid Credentials" });
 
-      });
+//       });
 
-    } catch (error) {
+//     } catch (error) {
 
-      res.status(401).send(err.message);
+//       res.status(401).send(err.message);
       
-    }
+//     }
 
-});
+// });
 
 // route for getting a user's profile data
 // route for updating a user's profile data
